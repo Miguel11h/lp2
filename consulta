@@ -1,0 +1,36 @@
+import sqlite3
+conexao = sqlite3.connect('produtos.db')
+cursor = conexao.cursor()
+list = []
+while True:
+  print('Digite o nome do produto: ')
+  nome = input()
+  print('Digite o preço do produto: ')
+  preco = input()
+  print(f'os dados são: Nome:{nome}\n Preço:R${preco}\n tudo correto? s/n')
+  resposta = input()
+  if resposta == 's':
+    list.append((nome, preco))
+    cursor.executemany(
+      '''
+      insert into produtos(nome, preco)
+      values (?,?)
+      ''',list
+    )
+    print('Deseja cadastrar mais um produto?')
+    pergunta = input('s/n').lower()
+    if pergunta == 'n':
+      cursor.execute(
+        '''
+        select * 
+        from produtos
+        '''
+      )
+      resultado = cursor.fetchall()
+      for i in resultado:
+        print(f'Nome: {i[0]} \n Preço: R${i[1]}')
+
+      break
+conexao.commit()
+cursor.close()
+conexao.close()
