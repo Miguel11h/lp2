@@ -1,0 +1,37 @@
+import sqlite3
+conexao = sqlite3.connect('produtos.db')
+cursor = conexao.cursor()
+print('[1] Pesquisa por nome \n [2] Pesquisa por preço \n [3] Sair')
+pergunta = int(input())
+if pergunta == 1:
+    print('Digite o nome do produto: ')
+    nome = input()
+    cursor.execute(
+        '''
+        select *
+        from produtos
+        where nome = ?
+        ''', (nome, )
+    )
+    resultado = cursor.fetchall()
+    print(f'Produtos encontrados com o nome: {nome}:')
+    for i in resultado:
+        print(f'Nome: {i[0]} \nPreço: R${i[1]}')
+
+
+elif pergunta == 2:
+    print('Digite o preço do produto: ')
+    preco = input()
+    cursor.execute(
+        '''
+        select *
+        from produtos
+        where preco = (?)
+        ''', (preco, )
+    )
+    resultado = cursor.fetchall()
+    print(f'Produtos encontrados com o nome: {preco}:')
+    for i in resultado:
+        print(f'Nome: {i[0]} \n Preço: {i[1]}')
+cursor.close()
+conexao.close()
