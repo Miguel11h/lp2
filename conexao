@@ -1,0 +1,14 @@
+import sqlite3
+conexao = sqlite3.connect('produtos.db')
+cursor = conexao.cursor()
+cursor.execute(
+  '''
+  CREATE TABLE if not exists produtos(
+  nome text,
+  preco int
+  )
+  '''
+)
+conexao.commit()
+cursor.close()
+conexao.close()
